@@ -1,5 +1,5 @@
 import { IsNotEmpty, MinLength } from "class-validator";
-import { IsNotNullOrUndefined } from "../validator/Is-not-null-or-undefined.decorator";
+import { IsNotNullOrUndefined } from "../../validator/Is-not-null-or-undefined.decorator";
 
 export class RegisterRequest {
     @IsNotEmpty({ message: 'Name must not be empty' })

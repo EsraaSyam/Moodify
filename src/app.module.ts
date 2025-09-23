@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { MoodController } from './mood/mood.controller';
+import { MoodModule } from './mood/mood.module';
 
 @Module({
   imports: [
@@ -29,9 +31,10 @@ import { AuthModule } from './auth/auth.module';
       inject: [ConfigService],
     }),
     UserModule,
-    AuthModule
+    AuthModule,
+    MoodModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, MoodController],
   providers: [AppService],
 })
 export class AppModule {}

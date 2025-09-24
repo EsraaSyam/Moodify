@@ -8,6 +8,8 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { MoodController } from './mood/mood.controller';
 import { MoodModule } from './mood/mood.module';
+import { MoodLogController } from './mood-log/mood-log.controller';
+import { MoodLogModule } from './mood-log/mood-log.module';
 
 @Module({
   imports: [
@@ -32,9 +34,10 @@ import { MoodModule } from './mood/mood.module';
     }),
     UserModule,
     AuthModule,
-    MoodModule
+    MoodModule,
+    MoodLogModule
   ],
-  controllers: [AppController, MoodController],
+  controllers: [AppController, MoodController, MoodLogController],
   providers: [AppService],
 })
 export class AppModule {}

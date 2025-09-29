@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { MoodLogEntity } from "src/mood-log/mood-log.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('moods')
 export class MoodEntity {
@@ -7,4 +8,7 @@ export class MoodEntity {
 
     @Column({ unique: true })
     name: string;
+
+    @OneToMany(() => MoodLogEntity, moodLog => moodLog.mood, {cascade: true, eager: false})
+    moodLogs: MoodLogEntity[];
 }

@@ -15,4 +15,7 @@ export class MoodLogEntity {
 
     @ManyToOne(() => MoodEntity, mood => mood.moodLogs, {onDelete: 'SET NULL', eager: true})
     mood: MoodEntity;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    createdAt: Date;
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, Res } from '@nestjs/common';
 import { MoodLogService } from './mood-log.service';
 import { CreateMoodLogRequest } from './request/create-mood-log.request';
 import type { Response } from 'express';
@@ -8,6 +8,7 @@ import { isValidId } from 'src/validator/is-valid-id.decorator';
 import { MoodLogByUserResponse } from './response/get-mood-log-by-user.response';
 import { UpdateDateColumn } from 'typeorm';
 import { UpdateMoodLogRequest } from './request/update-mood-log.request';
+import { FindMoodLogRequest } from './request/find-mood-log.request';
 
 @Controller('mood-log')
 export class MoodLogController {
@@ -24,12 +25,12 @@ export class MoodLogController {
         });
     }
 
-    @Get("/user/:id")
-    async getAllMoodLogsByUserId(@isValidId() id: number, @Res() req: Response) {
-        const moodLogs = await this.moodLogService.findAllByUserId(id);
+    @Get()
+    async getAllMoodLogsByUserId(@Query() params: FindMoodLogRequest, @Res() req: Response) {
+        const moodLogs = await this.moodLogService.findAllByUserId(params);
         return req.status(200).json({
             message: 'Mood logs have been retrieved successfully',
-            data: plainToInstance(MoodLogByUserResponse, moodLogs, { excludeExtraneousValues: true }),
+            data: moodLogs,
         });
     }
 
@@ -56,7 +57,5 @@ export class MoodLogController {
             message: 'Mood log has been updated successfully',
             data: plainToInstance(MoodLogResponse, moodLog, { excludeExtraneousValues: true }),
         });
-    }
-
-    
+    } 
 }

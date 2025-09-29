@@ -9,6 +9,8 @@ import { UserNotFoundException } from 'src/user/exception/user-not-found.excepti
 import { MoodNotFoundException } from 'src/mood/exception/mood-not-found.exception';
 import { MoodLogNotFoundException } from './exception/mood-log-not-found.exception';
 import { UpdateMoodLogRequest } from './request/update-mood-log.request';
+import { FindMoodLogRequest } from './request/find-mood-log.request';
+import { FindMoodLogResponse } from './response/find-mood-log.response';
 
 @Injectable()
 export class MoodLogService {
@@ -45,17 +47,25 @@ export class MoodLogService {
         return await this.moodLogRepository.save(moodLog);
     }
 
-    async findAllByUserId(userId: number): Promise<MoodLogEntity[]> {
-        const user = await this.userRepository.findOneBy({ id: userId });
+    async findAllByUserId(params: FindMoodLogRequest): Promise<FindMoodLogResponse> {
+        const { page, limit, orderBy, orderDirection } = params;
+
+        const offset = (page - 1) * limit;
+
+        const user = await this.userRepository.findOneBy({ id: params.userId });
 
         if (!user) {
-            throw new UserNotFoundException(userId);
+            throw new UserNotFoundException(params.userId);
         }
 
-        return await this.moodLogRepository.find({
-            where: { user: { id: userId } },
-            order: { createdAt: 'DESC' },
+        const [moodLogs, total] = await this.moodLogRepository.findAndCount({
+            where: { user: { id: params.userId } },
+            skip: offset,
+            take: limit,
+            order: { [orderBy]: orderDirection }
         });
+
+        return new FindMoodLogResponse(moodLogs, total, page, limit);
     }
 
     async findById(id: number): Promise<MoodLogEntity | null> {

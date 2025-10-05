@@ -26,7 +26,7 @@ import { MoodLogModule } from './mood-log/mood-log.module';
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        autoLoadEntities: true,
+        // autoLoadEntities: true,
         namingStrategy: new SnakeNamingStrategy(),
         synchronize: true,
       }),

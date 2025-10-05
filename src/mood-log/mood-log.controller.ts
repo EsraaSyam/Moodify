@@ -9,6 +9,7 @@ import { MoodLogByUserResponse } from './response/get-mood-log-by-user.response'
 import { UpdateDateColumn } from 'typeorm';
 import { UpdateMoodLogRequest } from './request/update-mood-log.request';
 import { FindMoodLogRequest } from './request/find-mood-log.request';
+import { GetMoodLogDistributionRequest } from './request/get-mood-log-distribution.request';
 
 @Controller('mood-log')
 export class MoodLogController {
@@ -58,4 +59,13 @@ export class MoodLogController {
             data: plainToInstance(MoodLogResponse, moodLog, { excludeExtraneousValues: true }),
         });
     } 
+
+    @Get("analytics/distribution")
+    async getMoodLogDistribution(@Query() params: GetMoodLogDistributionRequest, @Res() req: Response) {
+        const distribution = await this.moodLogService.getMoodLogDistribution(params);
+        return req.status(200).json({
+            message: 'Mood log distribution has been retrieved successfully',
+            data: distribution,
+        });
+    }
 }

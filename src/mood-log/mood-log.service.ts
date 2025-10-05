@@ -11,6 +11,7 @@ import { MoodLogNotFoundException } from './exception/mood-log-not-found.excepti
 import { UpdateMoodLogRequest } from './request/update-mood-log.request';
 import { FindMoodLogRequest } from './request/find-mood-log.request';
 import { FindMoodLogResponse } from './response/find-mood-log.response';
+import { GetMoodLogDistributionRequest } from './request/get-mood-log-distribution.request';
 
 @Injectable()
 export class MoodLogService {
@@ -105,7 +106,7 @@ export class MoodLogService {
                 throw new MoodNotFoundException(updateData.moodId);
             }
 
-            moodLog.mood = mood; 
+            moodLog.mood = mood;
         }
 
         moodLog.note = updateData.note ?? moodLog.note;
@@ -116,5 +117,40 @@ export class MoodLogService {
             throw new Error(`Failed to update mood log: ${error.message}`);
         }
     }
+
+    async getMoodLogDistribution(params: GetMoodLogDistributionRequest) {
+        const query = this.buildMoodDistributionQuery(params);
+        const result = await query.getRawMany();
+        return this.calculateMoodPercentages(result);
+    }
+
+    private buildMoodDistributionQuery(params: GetMoodLogDistributionRequest) {
+        const query = this.moodLogRepository
+            .createQueryBuilder('mood_logs')
+            .select('mood_logs.mood', 'mood')
+            .addSelect('COUNT(*)', 'count')
+            .where('mood_logs.user_id = :userId', { userId: params.userId });
+
+        if (params.startDate && params.endDate) {
+            query.andWhere('mood_logs.created_at BETWEEN :startDate AND :endDate', {
+                startDate: params.startDate,
+                endDate: params.endDate,
+            });
+        }
+
+        query.groupBy('mood_logs.mood');
+
+        return query;
+    }
+
+    private calculateMoodPercentages(result: any[]) {
+        const total = result.reduce((sum, r) => sum + Number(r.count), 0);
+        return result.map(r => ({
+            mood: r.mood,
+            count: Number(r.count),
+            percentage: ((Number(r.count) / total) * 100).toFixed(1),
+        }));
+    }
+
 
 }

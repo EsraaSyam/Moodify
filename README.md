@@ -1,98 +1,117 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 💭 Moodify  
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+**Moodify** is a simple yet powerful app designed to help you understand your emotions and track your emotional journey with ease.  
+It’s your personal space to log how you feel each day — happy, sad, stressed, or anything in between — along with a short note and timestamp.  
+Later, Moodify analyzes this data to show your emotional patterns, fun stats, and how your moods change over time.  
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+I’m **Esraa Syam**, and I built this project to help people discover themselves through emotional awareness.  
+It’s not just a data storage app — it’s a reminder to take care of yourself and pay attention to how you feel. 💜  
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 💡 Project Idea  
 
-## Project setup
+I started **Moodify** to make something that helps people understand their emotions on a deeper level.  
+Each day, you log your mood with an optional note, and the app stores it with the date and time.  
+After a while, you can look back and see your **mood distribution** (how often you felt happy, sad, etc.),  
+**patterns** (like feeling a certain way on specific days), and even your **streaks** — the number of consecutive days you logged your mood.  
 
-```bash
-$ npm install
-```
+The project is still under development, but I’m focusing a lot on building a strong, well-structured backend that’s ready to scale.  
+This isn’t just another CRUD app — it’s built with real **backend engineering** principles, clean architecture, and performance optimization in mind.  
 
-## Compile and run the project
+---
 
-```bash
-# development
-$ npm run start
+## ⚙️ Tech Stack
 
-# watch mode
-$ npm run start:dev
+- **Backend:** NestJS (TypeScript)  
+- **Database:** PostgreSQL  
+- **ORM:** TypeORM  
+- **Containerization:** Docker  
+- **Architecture:** Modular with feature-based structure  
+- **Naming Convention:** Snake Case via `SnakeNamingStrategy`  
 
-# production mode
-$ npm run start:prod
-```
+---
 
-## Run tests
+## 🧠 Database Optimization
 
-```bash
-# unit tests
-$ npm run test
+I focused heavily on database optimization to make queries faster and more efficient.  
+Here’s what I did:
 
-# e2e tests
-$ npm run test:e2e
+- Created a **composite index** on `user_id` and `created_at` in the `mood_logs` table to improve query performance for analytics and filtering.  
+- Used **migrations** to ensure reproducible and version-controlled database changes.  
+- Structured entities and relationships carefully for scalability.  
 
-# test coverage
-$ npm run test:cov
-```
+Even though the project is still under development, these optimizations show real backend engineering effort — not just CRUD operations.
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🚀 How to Run the Project
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+If you’d like to try it locally:
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+1. **Clone the repository:**
+   ```bash
+   git clone git@github.com:EsraaSyam/Moodify.git
+   cd Moodify
+   ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+2. **Set up environment variables:**  
+   Create a `.env` file in the project root and add:
+   ```env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=postgres
+   DB_PASSWORD=your_password
+   DB_NAME=moodify
 
-## Resources
+   SECRET_KEY=your_secret_key
+   SALT_ROUNDS=10
+   ```
 
-Check out a few resources that may come in handy when working with NestJS:
+3. **Start Docker containers:**
+   ```bash
+   docker-compose up -d
+   ```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+4. **Run migrations:**
+   ```bash
+   npm run migration:run
+   ```
 
-## Support
+5. **Start the app:**
+   ```bash
+   npm run start:dev
+   ```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+---
 
-## Stay in touch
+## 📊 Upcoming Features
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **User Dashboard:** interactive charts and insights for each user’s mood history  
+- **Mood Streak Tracker:** number of consecutive days logged
+- **Custom Moods:** users will be able to create their own moods (private and visible only to them)  
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 💫 A Few Words from Me  
+
+For me, **Moodify** isn’t just a project — it’s a reflection of my passion for backend development.  
+I’m trying to build something meaningful while also challenging myself to design a strong and well-structured system.  
+Right now, I’m working on the analytics dashboard, and I’m super excited to see how users will interact with it.
+
+If you have any questions, ideas, or even just want to chat about development — I’m here!
+
+---
+
+## 🤝 Contributing & Discussions  
+
+Anyone who wants to contribute or share new ideas is more than welcome 💜 
+
+- Got a feature idea or found a bug? → Open an **Issue** on GitHub.  
+- Want to contribute code? → **Fork** the repo and submit a **Pull Request** with your changes.  
+- Just want to talk about the project? → Start a **Discussion**, and I’ll be there!  
+
+## 🪪 License  
+
+This project is licensed under the **MIT License**.  
+© 2025 **Esraa Syam**. All rights reserved.  

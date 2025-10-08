@@ -10,6 +10,9 @@ import { UpdateDateColumn } from 'typeorm';
 import { UpdateMoodLogRequest } from './request/update-mood-log.request';
 import { FindMoodLogRequest } from './request/find-mood-log.request';
 import { GetMoodLogDistributionRequest } from './request/get-mood-log-distribution.request';
+import { CurrentUser } from 'src/auth/decorator/current-user.decorator';
+import { RolesDec } from 'src/auth/decorator/roles.decorator';
+import { Roles } from 'src/user/role.enum';
 
 @Controller('mood-log')
 export class MoodLogController {
@@ -18,8 +21,9 @@ export class MoodLogController {
     ) {}
 
     @Post()
-    async createMoodLog(@Body() data: CreateMoodLogRequest, @Res() req: Response) {
-        const moodLog = await this.moodLogService.createMoodLog(data);
+    @RolesDec(Roles.USER)
+    async createMoodLog(@CurrentUser() user, @Body() data: CreateMoodLogRequest, @Res() req: Response) {
+        const moodLog = await this.moodLogService.createMoodLog(data, user.id);
         return req.status(201).json({
             message: 'Mood log has been created successfully',
             data: plainToInstance(MoodLogResponse, moodLog, { excludeExtraneousValues: true }),
@@ -27,8 +31,9 @@ export class MoodLogController {
     }
 
     @Get()
-    async getAllMoodLogsByUserId(@Query() params: FindMoodLogRequest, @Res() req: Response) {
-        const moodLogs = await this.moodLogService.findAllByUserId(params);
+    @RolesDec(Roles.USER)
+    async getAllMoodLogsByUserId(@CurrentUser() user, @Query() params: FindMoodLogRequest, @Res() req: Response) {
+        const moodLogs = await this.moodLogService.findAllByUserId(params, user.id);
         return req.status(200).json({
             message: 'Mood logs have been retrieved successfully',
             data: moodLogs,
@@ -36,6 +41,7 @@ export class MoodLogController {
     }
 
     @Get(':id')
+    @RolesDec(Roles.USER)
     async getMoodLogById(@isValidId() id: number, @Res() req: Response) {
         const moodLog = await this.moodLogService.findById(id);
         return req.status(200).json({
@@ -45,6 +51,7 @@ export class MoodLogController {
     }
 
     @Delete(':id')
+    @RolesDec(Roles.USER)
     async deleteMoodLogById(@isValidId() id: number, @Res() req: Response) {
         await this.moodLogService.deleteById(id);
         return req.status(204).send();
@@ -52,8 +59,9 @@ export class MoodLogController {
 
 
     @Put(':id')
-    async updateMoodLogById(@isValidId() id: number, @Body() data: UpdateMoodLogRequest, @Res() req: Response) {
-        const moodLog = await this.moodLogService.updateById(id, data);
+    @RolesDec(Roles.USER)
+    async updateMoodLogById(@CurrentUser() user, @isValidId() id: number, @Body() data: UpdateMoodLogRequest, @Res() req: Response) {
+        const moodLog = await this.moodLogService.updateById(id, data, user.id);
         return req.status(200).json({
             message: 'Mood log has been updated successfully',
             data: plainToInstance(MoodLogResponse, moodLog, { excludeExtraneousValues: true }),

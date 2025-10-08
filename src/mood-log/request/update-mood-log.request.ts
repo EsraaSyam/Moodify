@@ -9,8 +9,4 @@ export class UpdateMoodLogRequest {
     @IsPositive({ message: 'Mood ID must be a positive number' })
     @IsNumber({}, { message: 'Mood ID must be a number' })
     moodId?: number;
-
-    @IsPositive({ message: 'User ID must be a positive number' })
-    @IsNumber({}, { message: 'User ID must be a number' })
-    userId: number;
 }

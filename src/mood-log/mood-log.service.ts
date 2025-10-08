@@ -26,11 +26,11 @@ export class MoodLogService {
         private readonly moodRepository: Repository<MoodEntity>,
     ) { }
 
-    async createMoodLog(data: CreateMoodLogRequest): Promise<MoodLogEntity> {
-        const user = await this.userRepository.findOneBy({ id: data.userId });
+    async createMoodLog(data: CreateMoodLogRequest, userId: number): Promise<MoodLogEntity> {
+        const user = await this.userRepository.findOneBy({ id: userId });
 
         if (!user) {
-            throw new UserNotFoundException(data.userId);
+            throw new UserNotFoundException(userId);
         }
 
         const mood = await this.moodRepository.findOneBy({ id: data.moodId });
@@ -48,19 +48,19 @@ export class MoodLogService {
         return await this.moodLogRepository.save(moodLog);
     }
 
-    async findAllByUserId(params: FindMoodLogRequest): Promise<FindMoodLogResponse> {
+    async findAllByUserId(params: FindMoodLogRequest, userId: number): Promise<FindMoodLogResponse> {
         const { page, limit, orderBy, orderDirection } = params;
 
         const offset = (page - 1) * limit;
 
-        const user = await this.userRepository.findOneBy({ id: params.userId });
+        const user = await this.userRepository.findOneBy({ id: userId });
 
         if (!user) {
-            throw new UserNotFoundException(params.userId);
+            throw new UserNotFoundException(userId);
         }
 
         const [moodLogs, total] = await this.moodLogRepository.findAndCount({
-            where: { user: { id: params.userId } },
+            where: { user: { id: userId } },
             skip: offset,
             take: limit,
             order: { [orderBy]: orderDirection }
@@ -88,9 +88,9 @@ export class MoodLogService {
     }
 
 
-    async updateById(id: number, updateData: UpdateMoodLogRequest): Promise<MoodLogEntity> {
+    async updateById(id: number, updateData: UpdateMoodLogRequest, userId: number): Promise<MoodLogEntity> {
         const moodLog = await this.moodLogRepository.findOne({
-            where: { id, user: { id: updateData.userId } },
+            where: { id, user: { id: userId } },
         });
 
         if (!moodLog) {

@@ -17,8 +17,4 @@ export class FindMoodLogRequest {
 
     @IsString()
     orderDirection: "ASC" | "DESC" = "DESC";
-
-    @IsNumber()
-    @IsPositive()
-    userId: number;
 }
